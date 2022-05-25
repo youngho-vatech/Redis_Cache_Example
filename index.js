@@ -75,7 +75,7 @@ const set = (key, value) => {
 
 const get = (req, res, next) => {
   let key = req.route.path;
-  //   redisClient.expire(key, 100); //100초 동안 유효한 캐시데이터 100초 후에 만료가 됨
+  redisClient.expire(key, 10); //10초 동안 유효한 캐시데이터 10초 후에 만료가 됨
 
   redisClient.get(key, (error, data) => {
     if (error) res.status(400).send(err);
@@ -83,7 +83,7 @@ const get = (req, res, next) => {
       console.log("cache data existed");
       res.status(200).send(JSON.parse(data));
     } else {
-      console.log("cashe is empty");
+      console.log("cache is empty");
       next();
     }
   });
